@@ -12,6 +12,10 @@ urlpatterns = [
     
     path('login/', views.login_user, name='login'),
    
+   # path for logout
+   
+
+   
 
     # path for dealer reviews view
 
