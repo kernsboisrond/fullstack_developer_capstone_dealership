@@ -40,11 +40,14 @@ def login_user(request):
     return JsonResponse({'status': 'failed', 'message': 'Only POST requests are allowed'})
 
 # Create a `logout_request` view to handle sign out request
+@csrf_exempt
 def logout_user(request):
     if request.method == 'GET':
-        logout(request)  # Logs out the user
-        data = {"username": ""}  # Return an empty username
-        return JsonResponse(data)
+        if request.user.is_authenticated:
+            logout(request)  # Logs out the user
+            return JsonResponse({"status": "success", "message": "User logged out", "username": ""})
+        else:
+            return JsonResponse({"status": "failed", "message": "No user is logged in"})
     else:
         return JsonResponse({"error": "Only GET method is allowed"}, status=400)
 

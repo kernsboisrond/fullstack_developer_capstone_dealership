@@ -13,7 +13,7 @@ urlpatterns = [
     path('login/', views.login_user, name='login'),
    
    # path for logout
-   
+    path('logout/', views.logout_user, name='logout'),  # Ensure this path is correctly defined
 
    
 
