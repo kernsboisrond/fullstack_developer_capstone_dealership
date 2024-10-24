@@ -15,7 +15,8 @@ urlpatterns = [
    # path for logout
     path('logout/', views.logout_user, name='logout'),  # Ensure this path is correctly defined
 
-   
+   #path to register
+    #path('register/', views.register_user, name='register'),
 
     # path for dealer reviews view
 
