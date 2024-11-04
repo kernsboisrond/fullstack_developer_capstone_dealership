@@ -14,8 +14,7 @@ import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
 from .populate import initiate
-
-
+from .models import CarMake, CarModel
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
@@ -80,6 +79,32 @@ def registration(request):
     
     return JsonResponse({"error": "Invalid request method"}, status=400)
     
+def get_cars(request):
+    # Check if there are any CarMake records in the database
+    count = CarMake.objects.count()
+    print(count)
+    
+    # If no car makes exist, populate the database
+    if count == 0:
+        initiate()
+
+    # Fetch all CarModel records, including related CarMake data
+    car_models = CarModel.objects.select_related('car_make')
+    cars = []
+    
+    # Build a list of cars with their make and model information
+    for car_model in car_models:
+        cars.append({
+            "CarModel": car_model.name,
+            "CarMake": car_model.car_make.name
+        })
+        
+    # Return the list of cars as a JSON response
+    return JsonResponse({"CarModels": cars})
+
+
+
+
 # # Update the `get_dealerships` view to render the index page with
 # a list of dealerships
 # def get_dealerships(request):
@@ -96,3 +121,4 @@ def registration(request):
 # Create a `add_review` view to submit a review
 # def add_review(request):
 # ...
+

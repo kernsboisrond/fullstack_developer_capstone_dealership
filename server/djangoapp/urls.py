@@ -19,6 +19,7 @@ urlpatterns = [
     path('register/', views.registration, name='register'),
 
     # path for dealer reviews view
+    path('get_cars', view=views.get_cars, name ='getcars'),
 
     # path for add a review view
 
