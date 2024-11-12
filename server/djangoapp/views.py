@@ -103,9 +103,6 @@ def get_cars(request):
     # Return the list of cars as a JSON response
     return JsonResponse({"CarModels": cars})
 
-
-
-
 # # Update the `get_dealerships` view to render the index page with
 # a list of dealerships
 # def get_dealerships(request):
