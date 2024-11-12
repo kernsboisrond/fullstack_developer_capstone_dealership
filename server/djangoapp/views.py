@@ -1,13 +1,13 @@
 # Uncomment the required imports before adding the code
 
 from .restapis import get_request, analyze_review_sentiments, post_review
-from django.shortcuts import render
-from django.http import HttpResponseRedirect, HttpResponse
+# from django.shortcuts import render
+# from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404, render, redirect
+# from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import logout
-from django.contrib import messages
-from datetime import datetime
+# from django.contrib import messages
+# from datetime import datetime
 
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
@@ -51,13 +51,25 @@ def logout_user(request):
         if request.user.is_authenticated:
             logout(request)  # Logs out the user
             return JsonResponse(
-                {"status": "success", "message": "User logged out", "username": ""})
-        else:
-            return JsonResponse(
-                {"status": "failed", "message": "No user is logged in"})
-    else:
+                {
+                    "status": "success",
+                    "message": "User logged out",
+                    "username": ""
+                }
+            )
         return JsonResponse(
-            {"error": "Only GET method is allowed"}, status=400)
+            {
+                "status": "failed",
+                "message": "No user is logged in"
+            }
+        )
+    return JsonResponse(
+        {
+            "error": "Only GET method is allowed"
+        },
+        status=400
+    )
+
 
 # Create a `registration` view to handle sign up request
 
@@ -75,7 +87,11 @@ def registration(request):
         # Check if username or email already exists
         if User.objects.filter(username=username).exists():
             return JsonResponse(
-                {"userName": username, "error": "Already Registered"}, status=409)
+                {
+                    "userName": username,
+                    "error": "Already Registered"
+                },
+                status=409)
 
         if User.objects.filter(email=email).exists():
             return JsonResponse(
@@ -180,10 +196,10 @@ def get_dealer_details(request, dealer_id):
 
 
 def add_review(request):
-    if (request.user.is_anonymous == False):
+    if not request.user.is_anonymous:
         data = json.loads(request.body)
         try:
-            response = post_review(data)
+            post_review(data)
             return JsonResponse({"status": 200})
         except BaseException:
             return JsonResponse(
